@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 4",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [ID]\n,[Severity]\n,[Start_Time]\n,[End_Time]\n,[Start_Lat]\n,[Start_Lng]\n,[End_Lat]\n,[End_Lng]\n,[Distance(mi)]\n,[Description]\n,[Number]\n,[Street]\n,[Side]\n,[City]\n,[County]\n,[State]\n,[Zipcode]\n,[Country]\n,[Timezone]\n,[Airport_Code]\n,[Weather_Timestamp]\n,[Temperature(F)]\n,[Wind_Chill(F)]\n,[Humidity(%)]\n,[Pressure(in)]\n,[Visibility(mi)]\n,[Wind_Direction]\n,[Wind_Speed(mph)]\n,[Precipitation(in)]\n,[Weather_Condition]\n,[Amenity]\n,[Bump]\n,[Crossing]\n,[Give_Way]\n,[Junction]\n,[No_Exit]\n,[Railway]\n,[Roundabout]\n,[Station]\n,[Stop]\n,[Traffic_Calming]\n,[Traffic_Signal]\n,[Turning_Loop]\n,[Sunrise_Sunset]\n,[Civil_Twilight]\n,[Nautical_Twilight]\n,[Astronomical_Twilight]\n FROM [dbo].[staging_payment]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dataengsqlpool1",
+				"poolName": "dataengsqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
