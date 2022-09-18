@@ -321,6 +321,46 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 3')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "DROP TABLE [dbo].AggAccbyDateSeverity;\nGO;\n\nCREATE TABLE [dbo].AggAccbyDateSeverity (AccidentID varchar(50), AccidentDate DATE, AccSeverity VARCHAR(400) )\n\nGO;\n\nINSERT INTO AggAccbyDateSeverity(AccidentID, AccidentDate, AccSeverity)\nSELECT ID, TRY_CONVERT(DATE,left(Start_Time, 10)) AS AccidentDate,Severity  FROM dbo.staging_payment\n\nGO;\n\nSELECT AccidentDate, AccSeverity, count(AccidentID) as accbydateseverity\nfrom dbo.AggAccbyDateSeverity\nGROUP BY AccidentDate, AccSeverity\n;\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "dataengsqlpool1",
+						"poolName": "dataengsqlpool1"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 4')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT TOP (100) [ID]\n,[Severity]\n,[Start_Time]\n,[End_Time]\n,[Start_Lat]\n,[Start_Lng]\n,[End_Lat]\n,[End_Lng]\n,[Distance(mi)]\n,[Description]\n,[Number]\n,[Street]\n,[Side]\n,[City]\n,[County]\n,[State]\n,[Zipcode]\n,[Country]\n,[Timezone]\n,[Airport_Code]\n,[Weather_Timestamp]\n,[Temperature(F)]\n,[Wind_Chill(F)]\n,[Humidity(%)]\n,[Pressure(in)]\n,[Visibility(mi)]\n,[Wind_Direction]\n,[Wind_Speed(mph)]\n,[Precipitation(in)]\n,[Weather_Condition]\n,[Amenity]\n,[Bump]\n,[Crossing]\n,[Give_Way]\n,[Junction]\n,[No_Exit]\n,[Railway]\n,[Roundabout]\n,[Station]\n,[Stop]\n,[Traffic_Calming]\n,[Traffic_Signal]\n,[Turning_Loop]\n,[Sunrise_Sunset]\n,[Civil_Twilight]\n,[Nautical_Twilight]\n,[Astronomical_Twilight]\n FROM [dbo].[staging_payment]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "dataengsqlpool1",
+						"poolName": "dataengsqlpool1"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/dataengsqlpool1')]",
 			"type": "Microsoft.Synapse/workspaces/sqlPools",
 			"apiVersion": "2019-06-01-preview",
