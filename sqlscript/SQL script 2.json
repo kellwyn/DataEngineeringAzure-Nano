@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'dataengdlakefs1_dataengdlake1_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [dataengdlakefs1_dataengdlake1_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://dataengdlakefs1@dataengdlake1.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\nCREATE EXTERNAL TABLE staging_payment (\n[ID] nvarchar(4000),\n[Severity] nvarchar(4000),\n[Start_Time] nvarchar(4000),\n[End_Time] nvarchar(4000),\n[Start_Lat] nvarchar(4000),\n[Start_Lng] nvarchar(4000),\n[End_Lat] nvarchar(4000),\n[End_Lng] nvarchar(4000),\n[Distance(mi)] nvarchar(4000),\n[Description] nvarchar(4000),\n[Number] nvarchar(4000),\n[Street] nvarchar(4000),\n[Side] nvarchar(4000),\n[City] nvarchar(4000),\n[County] nvarchar(4000),\n[State] nvarchar(4000),\n[Zipcode] nvarchar(4000),\n[Country] nvarchar(4000),\n[Timezone] nvarchar(4000),\n[Airport_Code] nvarchar(4000),\n[Weather_Timestamp] nvarchar(4000),\n[Temperature(F)] nvarchar(4000),\n[Wind_Chill(F)] nvarchar(4000),\n[Humidity(%)] nvarchar(4000),\n[Pressure(in)] nvarchar(4000),\n[Visibility(mi)] nvarchar(4000),\n[Wind_Direction] nvarchar(4000),\n[Wind_Speed(mph)] nvarchar(4000),\n[Precipitation(in)] nvarchar(4000),\n[Weather_Condition] nvarchar(4000),\n[Amenity] nvarchar(4000),\n[Bump] nvarchar(4000),\n[Crossing] nvarchar(4000),\n[Give_Way] nvarchar(4000),\n[Junction] nvarchar(4000),\n[No_Exit] nvarchar(4000),\n[Railway] nvarchar(4000),\n[Roundabout] nvarchar(4000),\n[Station] nvarchar(4000),\n[Stop] nvarchar(4000),\n[Traffic_Calming] nvarchar(4000),\n[Traffic_Signal] nvarchar(4000),\n[Turning_Loop] nvarchar(4000),\n[Sunrise_Sunset] nvarchar(4000),\n[Civil_Twilight] nvarchar(4000),\n[Nautical_Twilight] nvarchar(4000),\n[Astronomical_Twilight] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'US_Accidents_Dec21_updated.csv',\n\tDATA_SOURCE = [dataengdlakefs1_dataengdlake1_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.staging_payment\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "dataengsqlpool1",
+				"poolName": "dataengsqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
