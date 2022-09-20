@@ -1,0 +1,122 @@
+{
+	"name": "Pipeline_azpostgredb_to_azblob",
+	"properties": {
+		"description": "Ingest wizard to create a one-time pipeline that ingests the data from PostgreSQL into Azure Blob Storage utilizing linked servers. This will result in all four tables being represented as text files in Blob Storage, ready for loading into the data warehouse.",
+		"activities": [
+			{
+				"name": "ForEach_gwz",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_gwz",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "public.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "dataset//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "AzurePostgreSqlSource"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_gwz",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_gwz",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "payment"
+						},
+						"destination": {
+							"fileName": "publicpayment.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "rider"
+						},
+						"destination": {
+							"fileName": "publicrider.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "station"
+						},
+						"destination": {
+							"fileName": "publicstation.txt"
+						}
+					},
+					{
+						"source": {
+							"table": "trip"
+						},
+						"destination": {
+							"fileName": "publictrip.txt"
+						}
+					}
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-09-20T13:12:53Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}
